@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using WallyApp.BackgroundTasks;
 using WallyApp.BackgroundTasks.BingHandler;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -31,43 +33,59 @@ namespace WallyApp
             this.InitializeComponent();
         }
 
+        BingJSON jsonImageData;
+        BitmapImage bingBitmap;
+
         private async void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             BingPotd potd = new BingPotd();
-            var bingBitmap = await potd.getBingPOTDBitmap();
+            jsonImageData = await potd.getBingResponse();
+            bingBitmap = await potd.loadImage(jsonImageData);
             var imageBrush = new ImageBrush();
+            imageBrush.Stretch = Stretch.UniformToFill;
             imageBrush.ImageSource = bingBitmap;
             WallsPage.Background = imageBrush;
-
-            
         }
 
-        private void SaveFolderTextBox_TextChanging(TextBox sender, TextBoxTextChangingEventArgs args)
+        private void SelectSaveFolder_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Debug.WriteLine("Something happened bitch");
-        }
-
-        private void SaveImageCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            if (SaveImageCheckBox.IsChecked == true)
-            {
-                SelectSaveFolder.IsEnabled = true;
-            }
-            else
-            {
-                SelectSaveFolder.IsEnabled = false;
-            }
+            Debug.WriteLine("Choosing a folder");
         }
 
         private void SaveImageCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            if (SaveImageCheckBox.IsChecked == true)
+            
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            StorageFolder folder = KnownFolders.PicturesLibrary;
+            StorageFolder wallyFolder;
+            try
             {
-                SelectSaveFolder.IsEnabled = true;
+                wallyFolder = await folder.GetFolderAsync("WallyUp");
+                Debug.WriteLine("Folder found");
             }
-            else
+            catch (FileNotFoundException fnfexception)
             {
-                SelectSaveFolder.IsEnabled = false;
+                Debug.WriteLine(fnfexception.Message);
+                Debug.WriteLine("Folder not found creating one!");
+                wallyFolder = await folder.CreateFolderAsync("WallyUp");
+            }
+            Debug.WriteLine(jsonImageData.images[0].title.ToString());
+            try
+            {
+                var imageFile = await wallyFolder.CreateFileAsync(
+                    jsonImageData.images[0].title.ToString().Replace(' ', '-') + ".jpg"
+                    );
+                var streamToStore = await imageFile.OpenStreamForWriteAsync();
+                var client = new HttpClient();
+                var imageStream = await client.GetStreamAsync(jsonImageData.images[0].url);
+                
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception.StackTrace);
             }
         }
     }

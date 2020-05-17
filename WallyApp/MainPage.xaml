@@ -14,12 +14,9 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <CheckBox x:Name="SaveImageCheckBox" Content="Save" Checked="SaveImageCheckBox_Checked" Click="SaveImageCheckBox_Click"/>
+            <CheckBox x:Name="SaveImageCheckBox" Content="Save in Photos" Click="SaveImageCheckBox_Click" Margin="0,0,20,0" HorizontalAlignment="Center"/>
 
-            <TextBlock x:Name="SaveFolderLocation" Text="No Directory chosen as of yet" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,20,0" ManipulationMode="System" RequestedTheme="Dark" FocusVisualPrimaryBrush="Gray" Foreground="Gray"/>
-            <Button x:Name="SelectSaveFolder" IsEnabled="False" Content="Choose a Folder" Margin="0,0,20,0"/>
-
-            <Button RelativePanel.RightOf="SaveDirectoryAddress" Content="Set As WallPaper"/>
+            <Button x:Name="SetWallpaper" RelativePanel.RightOf="SaveDirectoryAddress" Content="Set As WallPaper" Click="Button_Click"/>
         </StackPanel>
 
     </Grid>
