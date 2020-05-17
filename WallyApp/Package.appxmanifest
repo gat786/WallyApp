@@ -15,7 +15,7 @@
 
   <Properties>
     <DisplayName>WallyApp</DisplayName>
-    <PublisherDisplayName>gat78</PublisherDisplayName>
+    <PublisherDisplayName>Ganesh Tiwari</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -45,5 +45,6 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <uap:Capability Name="picturesLibrary"/>
   </Capabilities>
 </Package>

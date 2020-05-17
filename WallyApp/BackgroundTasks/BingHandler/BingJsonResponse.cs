@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace WallyApp.BackgroundTasks.BingHandler
 {
-    class BingJsonResponse
-    {
-    }
 
     public class Image
     {
@@ -38,7 +35,7 @@ namespace WallyApp.BackgroundTasks.BingHandler
         public string walls { get; set; }
     }
 
-    public class Example
+    public class BingJSON
     {
         public IList<Image> images { get; set; }
         public Tooltips tooltips { get; set; }

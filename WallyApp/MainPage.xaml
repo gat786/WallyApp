@@ -1,4 +1,4 @@
-﻿<Page
+﻿<Page x:Name="WallsPage"
     x:Class="WallyApp.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,7 +8,19 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Loaded="Grid_Loaded">
+    <Grid Loaded="Grid_Loaded" VerticalAlignment="Bottom">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <CheckBox x:Name="SaveImageCheckBox" Content="Save" Checked="SaveImageCheckBox_Checked" Click="SaveImageCheckBox_Click"/>
+
+            <TextBlock x:Name="SaveFolderLocation" Text="No Directory chosen as of yet" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,20,0" ManipulationMode="System" RequestedTheme="Dark" FocusVisualPrimaryBrush="Gray" Foreground="Gray"/>
+            <Button x:Name="SelectSaveFolder" IsEnabled="False" Content="Choose a Folder" Margin="0,0,20,0"/>
+
+            <Button RelativePanel.RightOf="SaveDirectoryAddress" Content="Set As WallPaper"/>
+        </StackPanel>
 
     </Grid>
 </Page>
