@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
-using WallyApp.BackgroundTasks;
-using WallyApp.BackgroundTasks.BingHandler;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -18,6 +16,10 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+
+
+using WallyApp.BackgroundTasks;
+using WallyApp.BackgroundTasks.BingHandler;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -76,12 +78,16 @@ namespace WallyApp
             try
             {
                 var imageFile = await wallyFolder.CreateFileAsync(
-                    jsonImageData.images[0].title.ToString().Replace(' ', '-') + ".jpg"
+                    jsonImageData.images[0].title.ToString().Replace(' ', '-') + ".jpg",
+                    CreationCollisionOption.ReplaceExisting
                     );
-                var streamToStore = await imageFile.OpenStreamForWriteAsync();
                 var client = new HttpClient();
-                var imageStream = await client.GetStreamAsync(jsonImageData.images[0].url);
-                
+                var imageStream = await client.GetStreamAsync(StaticData.BING_BASE + jsonImageData.images[0].url);
+
+                WallpaperHandler handler = new WallpaperHandler();
+                handler.saveImageToFile(imageStream: imageStream, fileToWrite: imageFile);
+                var result = await handler.setWallpaper(imageFile);
+                Debug.WriteLine("Result is " + result);
             }
             catch (Exception exception)
             {
