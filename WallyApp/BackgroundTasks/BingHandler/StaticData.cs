@@ -9,21 +9,13 @@ namespace WallyApp
 {
     class StaticData
     {
-        public enum Locales { 
-            UnitedStates,
-            India,
-            UnitedKingdom,
-            Canada,
-            Italy,
-            Algeria,
-            Ireland,
-            Mexico
-        }
 
+        public static string BING_BASE = "https://www.bing.com";
         private static string bING_POTD_URL = "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
 
-        public static string getLocaleSpecific(Locales locale){
-            string specificURL="";
+        public static string getLocaleSpecific(Locales locale)
+        {
+            string specificURL = "";
             switch (locale)
             {
                 case Locales.UnitedStates:
@@ -57,5 +49,18 @@ namespace WallyApp
         }
 
         public static string BING_POTD_URL { get => bING_POTD_URL; }
+
+        public enum Locales
+        {
+            UnitedStates,
+            India,
+            UnitedKingdom,
+            Canada,
+            Italy,
+            Algeria,
+            Ireland,
+            Mexico
+        }
+        
     }
 }
