@@ -71,10 +71,10 @@ namespace WallyApp
                 WallpaperHandler handler = new WallpaperHandler();
                 MemoryStream ms = new MemoryStream();
                 imageStream.CopyTo(ms);
-                await handler.saveToAppData(ms.GetBuffer(), jsonImageData);
+                var wallImage = await handler.saveToAppData(ms.GetBuffer(), jsonImageData);
                 //handler.saveImageToPicturesLibrary(imageStream: imageStream, fileToWrite: imageFile);
                 
-                var result = await handler.setWallpaper(imageFile);
+                var result = await handler.setWallpaper(wallImage);
                 Debug.WriteLine("Result is " + result);
             }
             catch (Exception exception)
