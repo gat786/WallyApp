@@ -61,31 +61,19 @@ namespace WallyApp
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            StorageFolder folder = KnownFolders.PicturesLibrary;
-            StorageFolder wallyFolder;
+            
             try
             {
-                wallyFolder = await folder.GetFolderAsync("WallyUp");
-                Debug.WriteLine("Folder found");
-            }
-            catch (FileNotFoundException fnfexception)
-            {
-                Debug.WriteLine(fnfexception.Message);
-                Debug.WriteLine("Folder not found creating one!");
-                wallyFolder = await folder.CreateFolderAsync("WallyUp");
-            }
-            Debug.WriteLine(jsonImageData.images[0].title.ToString());
-            try
-            {
-                var imageFile = await wallyFolder.CreateFileAsync(
-                    jsonImageData.images[0].title.ToString().Replace(' ', '-') + ".jpg",
-                    CreationCollisionOption.ReplaceExisting
-                    );
+                
                 var client = new HttpClient();
                 var imageStream = await client.GetStreamAsync(StaticData.BING_BASE + jsonImageData.images[0].url);
 
                 WallpaperHandler handler = new WallpaperHandler();
-                handler.saveImageToFile(imageStream: imageStream, fileToWrite: imageFile);
+                MemoryStream ms = new MemoryStream();
+                imageStream.CopyTo(ms);
+                await handler.saveToAppData(ms.GetBuffer(), jsonImageData);
+                //handler.saveImageToPicturesLibrary(imageStream: imageStream, fileToWrite: imageFile);
+                
                 var result = await handler.setWallpaper(imageFile);
                 Debug.WriteLine("Result is " + result);
             }
