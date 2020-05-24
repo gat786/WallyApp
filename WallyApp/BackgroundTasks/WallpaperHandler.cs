@@ -17,12 +17,12 @@ namespace WallyApp.BackgroundTasks
     {
         string getFileName(BingJSON jsonImageData) => jsonImageData.images[0].title.ToString();
 
-        public async Task<StorageFile> saveToAppData(byte[] buffer,BingJSON jsonImageData)
+        public async Task<StorageFile> saveToAppData(byte[] buffer,string fileName)
         {
-            var fileName = getFileName(jsonImageData);    
             StorageFolder folder = ApplicationData.Current.LocalFolder;
-            var fileToWrite = await folder.CreateFileAsync(fileName);
+            var fileToWrite = await folder.CreateFileAsync(fileName,CreationCollisionOption.GenerateUniqueName);
             await FileIO.WriteBytesAsync( fileToWrite, buffer);
+            Debug.WriteLine(buffer.Length);
             return fileToWrite;
         }
 
@@ -39,10 +39,9 @@ namespace WallyApp.BackgroundTasks
             return success;
         }
 
-        public async Task<StorageFile> saveImageToPicturesLibrary(Stream imageStream,BingJSON jsonImageData)
+        public async Task<StorageFile> saveImageToPicturesLibrary(byte[] buffer,string fileName)
         {
             StorageFolder wallyFolder;
-            var fileName = getFileName(jsonImageData);
             try
             {
                 wallyFolder = await KnownFolders.PicturesLibrary.GetFolderAsync("WallyUp");
@@ -58,14 +57,11 @@ namespace WallyApp.BackgroundTasks
 
             var imageFile = await wallyFolder.CreateFileAsync(
                     fileName,
-                    CreationCollisionOption.ReplaceExisting
+                    CreationCollisionOption.GenerateUniqueName
                     );
             
-            MemoryStream ms = new MemoryStream();
-            imageStream.CopyTo(ms);
-            await FileIO.WriteBytesAsync(imageFile,
-                                         ms.GetBuffer());
-
+            await FileIO.WriteBytesAsync(imageFile, buffer);
+            
             return imageFile;
         }
     }
