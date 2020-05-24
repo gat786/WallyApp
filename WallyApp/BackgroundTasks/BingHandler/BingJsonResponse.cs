@@ -35,7 +35,7 @@ namespace WallyApp.BackgroundTasks.BingHandler
         public string walls { get; set; }
     }
 
-    public class BingJSON
+    public class BingJSON :object
     {
         public IList<Image> images { get; set; }
         public Tooltips tooltips { get; set; }

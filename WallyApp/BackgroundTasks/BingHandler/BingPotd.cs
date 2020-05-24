@@ -11,36 +11,68 @@ using Newtonsoft.Json;
 using WallyApp.BackgroundTasks.BingHandler;
 using System.IO;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
 
 namespace WallyApp.BackgroundTasks
 {
-    class BingPotd
+    public class BingPotd : WallpaperResource
     {
+        string jsonResponse;
+        BingJSON jsonResponseObject;
+        MemoryStream stream = new MemoryStream();
+        byte[] buffer;
+        BitmapImage bitmapImage = new BitmapImage();
 
-        async public Task<BingJSON> getBingResponse()
+       
+
+        public async Task<string>  GetJsonResponse()
         {
             var client = new HttpClient();
-            var result = await (
+            jsonResponse = await(
                             await client.GetAsync(StaticData.BING_POTD_URL)
                             ).Content.ReadAsStringAsync();
-            Debug.WriteLine("result is " + result);
-            var bingResponse = JsonConvert.DeserializeObject<BingJSON>(result);
-            return bingResponse;
+            jsonResponseObject = JsonConvert.DeserializeObject<BingJSON>(jsonResponse);
+            Debug.WriteLine("result is " + jsonResponse);
+            return jsonResponse;
         }
 
-        async public Task<BitmapImage> getBingPOTDBitmap()
+        public async Task<Stream> GetStreamOfImage()
         {
-            BingPotd potd = new BingPotd();
-            var potdResult = await potd.getBingResponse();
-            var image = new BitmapImage(new Uri(StaticData.BING_BASE + potdResult.images[0].url));
-            return image;
+            if (jsonResponseObject == null)
+            {
+                await GetJsonResponse();
+            }
+            var client = new HttpClient();
+            Stream iStream = await client.GetStreamAsync(StaticData.BING_BASE + jsonResponseObject.images[0].url);
+            await iStream.CopyToAsync(stream);
+            stream.Position = 0;
+            return stream;
         }
 
-        async public Task<BitmapImage> loadImage(BingJSON imageData)
+        public async Task<BitmapImage> GetBitmapImage()
         {
-            Debug.WriteLine(imageData.images[0].title.ToString());
-            var image = new BitmapImage(new Uri(StaticData.BING_BASE + imageData.images[0].url));
-            return image;
+            if (stream == null)
+            {
+                await GetStreamOfImage();
+            }
+            await bitmapImage.SetSourceAsync(stream.AsRandomAccessStream());
+            return bitmapImage;
+        }
+
+        public async Task<byte[]> GetImageBuffer()
+        {
+            if (stream == null)
+            {
+                await GetStreamOfImage();
+            }
+            buffer = stream.GetBuffer();
+            return buffer;
+        }
+
+        public string GetFileName()
+        {
+            return jsonResponseObject.images[0].title.Replace(' ', '-') + ".jpg";
         }
     }
 }
