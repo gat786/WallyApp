@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Navigation;
 
 using WallyApp.BackgroundTasks;
 using WallyApp.BackgroundTasks.BingHandler;
+using Windows.Storage.Streams;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -36,22 +37,17 @@ namespace WallyApp
         }
 
         BingJSON jsonImageData;
-        BitmapImage bingBitmap;
+        BitmapImage bingBitmap = new BitmapImage();
+        Stream stream;
+        BingPotd potd = new BingPotd();
 
         private async void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            BingPotd potd = new BingPotd();
-            jsonImageData = await potd.getBingResponse();
-            bingBitmap = await potd.loadImage(jsonImageData);
-            var imageBrush = new ImageBrush();
-            imageBrush.Stretch = Stretch.UniformToFill;
+            ImageBrush imageBrush = new ImageBrush();
+            stream = await potd.GetStreamOfImage();
+            await bingBitmap.SetSourceAsync(stream.AsRandomAccessStream());
             imageBrush.ImageSource = bingBitmap;
             WallsPage.Background = imageBrush;
-        }
-
-        private void SelectSaveFolder_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            Debug.WriteLine("Choosing a folder");
         }
 
         private void SaveImageCheckBox_Click(object sender, RoutedEventArgs e)
@@ -64,22 +60,20 @@ namespace WallyApp
             
             try
             {
-                
-                var client = new HttpClient();
-                var imageStream = await client.GetStreamAsync(StaticData.BING_BASE + jsonImageData.images[0].url);
-
+                var imageBuffer = await potd.GetImageBuffer();
                 WallpaperHandler handler = new WallpaperHandler();
-                MemoryStream ms = new MemoryStream();
-                imageStream.CopyTo(ms);
-                var wallImage = await handler.saveToAppData(ms.GetBuffer(), jsonImageData);
-                //handler.saveImageToPicturesLibrary(imageStream: imageStream, fileToWrite: imageFile);
                 
+                var wallImage = await handler.saveToAppData(imageBuffer, potd.GetFileName());
+                if (SaveImageCheckBox.IsChecked.Value)
+                {
+                    await handler.saveImageToPicturesLibrary(imageBuffer, potd.GetFileName());
+                }
                 var result = await handler.setWallpaper(wallImage);
                 Debug.WriteLine("Result is " + result);
             }
             catch (Exception exception)
             {
-                Debug.WriteLine(exception.StackTrace);
+                Debug.WriteLine(exception.Message);
             }
         }
     }

@@ -122,6 +122,7 @@
     <Compile Include="BackgroundTasks\BingHandler\BingPotd.cs" />
     <Compile Include="BackgroundTasks\BingHandler\BingJsonResponse.cs" />
     <Compile Include="BackgroundTasks\WallpaperHandler.cs" />
+    <Compile Include="BackgroundTasks\WallpaperResource.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
