@@ -15,4 +15,7 @@ jobs:
     - name: Setup MSBuild.exe
       uses: warrenbuckley/Setup-MSBuild@v1
     - name: Build
-      run: msbuild WallyApp.sln /p:Configuration=Release /p:Platform=x64 /p:AppxBundle=Always 
+      run: |
+        dir
+        echo "This is a custom message"
+        msbuild WallyApp.sln /p:Configuration=Release /p:Platform=x64 /p:AppxBundle=Always 
