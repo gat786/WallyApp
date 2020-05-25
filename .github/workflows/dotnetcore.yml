@@ -13,4 +13,4 @@ jobs:
 
     steps:
     - name: Build
-      run: devenv /build release ./WallyApp.sln
+      run: MSBuild.exe .\WallyApp.sln /p:Configuration=Release /p:Platform=x64 /p:AppxBundle=Always
