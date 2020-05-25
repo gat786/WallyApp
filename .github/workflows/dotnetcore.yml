@@ -17,4 +17,4 @@ jobs:
     - name: Setup MSBuild.exe
       uses: warrenbuckley/Setup-MSBuild@v1
     - name: MSBuild
-      run: msbuild WallyApp.sln -t:build -p:Configuration=Debug -p:Platform=x64 -m -restore
+      run: msbuild WallyApp.sln -t:build -p:Configuration=Release -p:Platform=x64 -m -restore
