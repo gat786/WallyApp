@@ -1,5 +1,6 @@
 name: .NET Core
 
+
 on:
   push:
     branches: '*'
@@ -8,9 +9,10 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1
     - name: Build
       run: MSBuild.exe .\WallyApp.sln /p:Configuration=Release /p:Platform=x64 /p:AppxBundle=Always
