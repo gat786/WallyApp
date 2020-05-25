@@ -1,4 +1,4 @@
-name: .NET Core
+name: Build UWP Apps
 
 
 on:
@@ -15,4 +15,4 @@ jobs:
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
     - name: Build
-      run: MSBuild.exe .\WallyApp.sln /p:Configuration=Release /p:Platform=x64 /p:AppxBundle=Always
+      run: MSBuild.exe WallyApp.sln /p:Configuration=Release /p:Platform=x64 /p:AppxBundle=Always
