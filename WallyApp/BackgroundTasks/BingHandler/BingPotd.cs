@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.Data.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using WallyApp.BackgroundTasks.BingHandler;
 using System.IO;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.Graphics.Imaging;
-using Windows.Storage.Streams;
 
 namespace WallyApp.BackgroundTasks
 {
@@ -24,7 +17,9 @@ namespace WallyApp.BackgroundTasks
         byte[] buffer;
         BitmapImage bitmapImage = new BitmapImage();
 
-       
+        public BingPotd()
+        {
+        }
 
         public async Task<string>  GetJsonResponse()
         {

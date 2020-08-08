@@ -6,18 +6,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="WallsPage_Loaded">
 
-    <Grid Loaded="Grid_Loaded" VerticalAlignment="Bottom">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-
-            <CheckBox x:Name="SaveImageCheckBox" Content="Save in Photos" Click="SaveImageCheckBox_Click" Margin="0,0,20,0" HorizontalAlignment="Center"/>
-
-            <Button x:Name="SetWallpaper" RelativePanel.RightOf="SaveDirectoryAddress" Content="Set As WallPaper" Click="Button_Click"/>
+    <Grid>
+        
+    <StackPanel x:Name="InternetUnavailableMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
+        <Image Height="100" Width="100"/>
+            <TextBlock x:Name="InternetUnavailableLabel" Text="Internet is Unavailable" TextAlignment="Center" TextWrapping="Wrap"/>
         </StackPanel>
+    <StackPanel Orientation="Horizontal" Height="100" HorizontalAlignment="Center" VerticalAlignment="Bottom">
 
+        <CheckBox x:Name="SaveImageCheckBox" Content="Save in Photos" Click="SaveImageCheckBox_Click" Margin="0,0,20,0" HorizontalAlignment="Center"/>
+
+        <Button x:Name="SetWallpaper" RelativePanel.RightOf="SaveDirectoryAddress" Content="Set As WallPaper" Click="Button_Click"/>
+        
+    </StackPanel>
     </Grid>
 </Page>

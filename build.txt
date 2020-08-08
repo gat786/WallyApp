@@ -1,0 +1,1 @@
+MSBuild.exe .\WallyApp\WallyApp.sln /p:Configuration=Release /p:Platform=x64 /p:AppxBundle=Always

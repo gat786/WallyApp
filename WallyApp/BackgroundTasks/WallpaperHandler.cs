@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,6 @@ namespace WallyApp.BackgroundTasks
 {
     class WallpaperHandler
     {
-        string getFileName(BingJSON jsonImageData) => jsonImageData.images[0].title.ToString();
 
         public async Task<StorageFile> saveToAppData(byte[] buffer,string fileName)
         {

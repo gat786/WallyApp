@@ -119,8 +119,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTasks\ApplicationDataSource.cs" />
     <Compile Include="BackgroundTasks\BingHandler\BingPotd.cs" />
     <Compile Include="BackgroundTasks\BingHandler\BingJsonResponse.cs" />
+    <Compile Include="BackgroundTasks\NetworkHandler.cs" />
     <Compile Include="BackgroundTasks\WallpaperHandler.cs" />
     <Compile Include="BackgroundTasks\WallpaperResource.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -128,6 +130,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BackgroundTasks\BingHandler\StaticData.cs" />
+    <Compile Include="StringResources.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

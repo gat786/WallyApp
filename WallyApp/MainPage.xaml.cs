@@ -41,19 +41,16 @@ namespace WallyApp
         Stream stream;
         BingPotd potd = new BingPotd();
 
-        private async void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-            ImageBrush imageBrush = new ImageBrush();
-            stream = await potd.GetStreamOfImage();
-            await bingBitmap.SetSourceAsync(stream.AsRandomAccessStream());
-            imageBrush.ImageSource = bingBitmap;
-            WallsPage.Background = imageBrush;
-        }
 
         private void SaveImageCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            
-        }
+
+            ApplicationDataSource source = new ApplicationDataSource();
+            if (SaveImageCheckBox.IsChecked.Value)
+            {
+                source.SetCurrentSetting(StringResources.SAVE_IMAGE_TO_LOCAL, SaveImageCheckBox.IsChecked.Value.ToString());    
+            }
+        } 
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -74,6 +71,24 @@ namespace WallyApp
             catch (Exception exception)
             {
                 Debug.WriteLine(exception.Message);
+            }
+        }
+
+        async private void WallsPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            var networkHandler = new NetworkHandler();
+            if (networkHandler.checkInternetConnection())
+            {
+                InternetUnavailableMessage.Visibility = Visibility.Collapsed;
+                ImageBrush imageBrush = new ImageBrush();
+                stream = await potd.GetStreamOfImage();
+                await bingBitmap.SetSourceAsync(stream.AsRandomAccessStream());
+                imageBrush.ImageSource = bingBitmap;
+                WallsPage.Background = imageBrush;
+            }
+            else
+            {
+                InternetUnavailableMessage.Visibility = Visibility.Visible;
             }
         }
     }
