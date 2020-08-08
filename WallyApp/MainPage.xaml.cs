@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Navigation;
 using WallyApp.BackgroundTasks;
 using WallyApp.BackgroundTasks.BingHandler;
 using Windows.Storage.Streams;
+using Windows.ApplicationModel.VoiceCommands;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -36,10 +37,9 @@ namespace WallyApp
             this.InitializeComponent();
         }
 
-        BingJSON jsonImageData;
-        BitmapImage bingBitmap = new BitmapImage();
+        BitmapImage ImageBitmap = new BitmapImage();
         Stream stream;
-        BingPotd potd = new BingPotd();
+        IWallpaperHandler potd = new BingPotd();
 
 
         private void SaveImageCheckBox_Click(object sender, RoutedEventArgs e)
@@ -74,22 +74,26 @@ namespace WallyApp
             }
         }
 
-        async private void WallsPage_Loaded(object sender, RoutedEventArgs e)
+        private void WallsPage_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadImageandSetImageBrush(potd);
+        }
+
+        async private void LoadImageandSetImageBrush(IWallpaperHandler potd) {
             var networkHandler = new NetworkHandler();
             if (networkHandler.checkInternetConnection())
             {
                 InternetUnavailableMessage.Visibility = Visibility.Collapsed;
                 ImageBrush imageBrush = new ImageBrush();
                 stream = await potd.GetStreamOfImage();
-                await bingBitmap.SetSourceAsync(stream.AsRandomAccessStream());
-                imageBrush.ImageSource = bingBitmap;
+                await ImageBitmap.SetSourceAsync(stream.AsRandomAccessStream());
+                imageBrush.ImageSource = ImageBitmap;
                 WallsPage.Background = imageBrush;
             }
             else
             {
                 InternetUnavailableMessage.Visibility = Visibility.Visible;
             }
-        }
+        }       
     }
 }

@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace WallyApp.BackgroundTasks
 {
-    public class BingPotd : WallpaperResource
+    public class BingPotd : IWallpaperHandler
     {
         string jsonResponse;
         BingJSON jsonResponseObject;

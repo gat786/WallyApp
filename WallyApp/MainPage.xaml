@@ -10,16 +10,69 @@
 
     <Grid>
         
-    <StackPanel x:Name="InternetUnavailableMessage" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed">
-        <Image Height="100" Width="100"/>
-            <TextBlock x:Name="InternetUnavailableLabel" Text="Internet is Unavailable" TextAlignment="Center" TextWrapping="Wrap"/>
+        <StackPanel x:Name="InternetUnavailableMessage" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Visibility="Collapsed">
+            <Image Height="100" Width="100"/>
+            <TextBlock x:Name="InternetUnavailableLabel" 
+                        Text="Internet is Unavailable" 
+                        TextAlignment="Center" 
+                        TextWrapping="Wrap"/>
         </StackPanel>
-    <StackPanel Orientation="Horizontal" Height="100" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+        <StackPanel Orientation="Horizontal" 
+                    Height="100" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Bottom">
 
-        <CheckBox x:Name="SaveImageCheckBox" Content="Save in Photos" Click="SaveImageCheckBox_Click" Margin="0,0,20,0" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="SaveImageCheckBox" 
+                        Content="Save in Photos" 
+                        Click="SaveImageCheckBox_Click" 
+                        Margin="0,0,20,0" 
+                        HorizontalAlignment="Center"/>
 
-        <Button x:Name="SetWallpaper" RelativePanel.RightOf="SaveDirectoryAddress" Content="Set As WallPaper" Click="Button_Click"/>
-        
-    </StackPanel>
+            <Button x:Name="SetWallpaper" 
+                    RelativePanel.RightOf="SaveDirectoryAddress" 
+                    Content="Set As WallPaper" 
+                    Click="Button_Click"/>
+
+            <Button
+                Margin="16"
+                FontFamily="Segoe MDL2 Assets"
+                Content="&#xE713;"
+                x:Name="SettingsButton" 
+                >
+                <Button.Flyout>
+                    <Flyout>
+                        <StackPanel>
+                            <TextBlock Margin="8">
+                                Choose a WallPaper Source
+                            </TextBlock>
+                            
+                            <ComboBox PlaceholderText="Select a Provider">
+                                <ComboBox.Items>
+                                    <ComboBoxItem Content="Reddit"/>
+                                    <ComboBoxItem Content="Bing"/>
+                                    <ComboBoxItem Content="NASA"/>
+                                    <ComboBoxItem Content="Unsplash"/>
+                                </ComboBox.Items>
+                            </ComboBox>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="8">
+                                    Current Source - 
+                                </TextBlock>
+
+                                <TextBlock x:Name="SourceName">
+                                    
+                                </TextBlock>
+                            </StackPanel>
+                            
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+
+        </StackPanel>
     </Grid>
 </Page>
