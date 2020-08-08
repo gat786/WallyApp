@@ -1,0 +1,20 @@
+name: Build UWP Apps
+
+
+on:
+  push:
+    branches: '*'
+  pull_request:
+    branches: '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@master
+      
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+    - name: MSBuild
+      run: msbuild WallyApp.sln -t:build -p:Configuration=Release -p:Platform=x64 -m -restore
